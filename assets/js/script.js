@@ -73,6 +73,9 @@ var createTaskEl = function(taskDataObj) {
 
     var taskActionsEl = createTaskActions(taskIdCounter);
     listItemEl.appendChild(taskActionsEl);
+    
+    //Add Entire List Item to List
+    tasksToDoEl.appendChild(listItemEl);
 
     switch (taskDataObj.status) {
         case "to do":
@@ -90,9 +93,6 @@ var createTaskEl = function(taskDataObj) {
         default:
             console.log("Something went wrong!");
     }    
-
-    //Add Entire List Item to List
-    tasksToDoEl.appendChild(listItemEl);
 
     taskDataObj.id = taskIdCounter;
     tasks.push(taskDataObj);
