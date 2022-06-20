@@ -189,7 +189,7 @@ var taskStatusChangeHandler = function(event) {
 
     for (var i = 0; i < tasks.length; i++) {
         if (tasks[i].id === parseInt(taskId)) {
-            tasks[i].status = status.Valye;
+            tasks[i].status = statusValue;
         }
     }
 
@@ -200,6 +200,51 @@ var saveTasks = function() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
 };
 
+
+var loadTasks = function() {
+    tasks = localStorage.getItem("tasks");
+
+    if (tasks === null || tasks === "") {
+        tasks = [];
+        return false;
+    }
+
+    tasks = JSON.parse(tasks);
+
+    for (i = 0; i < tasks.length; i++) {
+        tasks[i].id = taskIdCounter;
+
+        var listItemEl = document.createElement("li");
+        listItemEl.className = "task-item";
+        listItemEl.setAttribute("data-task-id", tasks[i].id);
+
+        var taskInfoEl = document.createElement("div");
+        taskInfoEl.className = "task-info";
+        taskInfoEl.innerHTML = "<h3 class='task-name'>" + tasks[i].name + "</h3><span class='task-type'>" + tasks[i].type + "</span>";
+        listItemEl.appendChild(taskInfoEl);
+
+        var taskActionsEl = createTaskActions(tasks[i].id);
+        listItemEl.appendChild(taskActionsEl);
+
+        if (tasks[i].status = "to do") {
+            listItemEl.querySelector("select[name='status-change']").selectedIndex = 0
+            tasksToDoEl.appendChild(listItemEl);
+        }
+        else if (tasks[i].status = "in progress") {
+            listItemEl.querySelector("select[name='status-change']").selectedIndex = 1
+            tasksInProgressEl.appendChild(listItemEl);
+        }
+        else if (tasks[i].status = "completed") {
+            listItemEl.querySelector("select[name='status-change']").selectedIndex = 2
+            tasksCompletedEl.appendChild(listItemEl);
+        }
+
+        taskIdCounter++;
+    }
+}
+
+
 pageContentEl.addEventListener("click", taskButtonHandler);
 formEl.addEventListener("submit", taskFormHandler);
 pageContentEl.addEventListener("change",taskStatusChangeHandler);
+loadTasks();
